@@ -10,7 +10,7 @@ public class Program
         string sortDirect = Console.ReadLine();
 
         if (sortDirect == "asc") { asc = true; }
-        ArrExtension.Sorting(arr, asc);
+        arr.Sorting( asc);
 
         foreach (int elem in arr)
         {
@@ -26,15 +26,15 @@ public static class ArrExtension
     public static int[] Sorting(this int[] arr, bool asc)
     {
         int temp;
-
-        if (asc)
-        {
+        
             for (int i = 0; i < arr.Length - 1; i++)
             {
                 for (int j = i + 1; j < arr.Length; j++)
                 {
-                    if (arr[i] > arr[j])
-                    {
+                bool swap = asc ?
+                arr[i] > arr[j] : arr[i] < arr[j];
+                if (swap)    
+                {
                         temp = arr[i];
                         arr[i] = arr[j];
                         arr[j] = temp;
@@ -42,22 +42,5 @@ public static class ArrExtension
                 }
             }
             return arr;
-        }
-        else
-        {
-            for (int i = 0; i < arr.Length - 1; i++)
-            {
-                for (int j = i + 1; j < arr.Length; j++)
-                {
-                    if (arr[i] < arr[j])
-                    {
-                        temp = arr[i];
-                        arr[i] = arr[j];
-                        arr[j] = temp;
-                    }
-                }
-            }
-            return arr;
-        }
     }
 }

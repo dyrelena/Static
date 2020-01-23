@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 public class Program
 {
@@ -7,102 +6,105 @@ public class Program
 
     public static void Main()
     {
-        List<double> numbersSet = new List<double>();
         bool finish = false;
-
-        Console.WriteLine("Select action: \t+ \t- \t* \t:");
-        string action = Console.ReadLine();
-
+        Console.Write("Available Actions: +, -, *, / \nTo finish - double-press Enter\n\n");
+        Calc.Print();
+        Console.Write("Enter the number: ");
+        double num = Convert.ToDouble(Console.ReadLine());
+        Calc.Add(num);
         do
-        {
-            Console.WriteLine("Enter the number or press 'Enter' to display the result:");
-            string tmp = Console.ReadLine();
-            if (!String.IsNullOrEmpty(tmp))
+        {   
+            Console.Write("Action: ");
+            string action = Console.ReadLine();
+            if (!String.IsNullOrEmpty(action))
             {
-                numbersSet.Add(Convert.ToDouble(tmp));
+                Console.Write("Number: ");
+                string tmp = Console.ReadLine();
+                if (!String.IsNullOrEmpty(tmp))
+                {
+                    num = Convert.ToDouble(tmp);
+
+
+                    if (action == "+")
+                    {
+                        Calc.Add(num);
+
+                    }
+                    else if (action == "-")
+                    {
+                        Calc.Differ(num);
+
+                    }
+                    else if (action == "*")
+                    {
+                        Calc.Multiplication(num);
+
+                    }
+                    else if (action == "/")
+                    {
+                        try
+                        {
+                            Calc.Division(num);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("ERROR: Division by zero");
+                        }
+
+                    }
+                    Calc.Print();
+
+                }
+                else
+                {
+                    finish = true;
+                }
             }
             else
             {
                 finish = true;
             }
+
         } while (!finish);
 
-        if (action == "+")
-        {
-            Result res = Calc.Add;
-            Console.WriteLine($" Result: {res(numbersSet.ToArray())}");
-        }
-        else if (action == "-")
-        {
-            Result res = Calc.Differ;
-            Console.WriteLine($" Result: {res(numbersSet.ToArray())}");
-        }
-        else if (action == "*")
-        {
-            Result res = Calc.Multiplication;
-            Console.WriteLine($" Result: {res(numbersSet.ToArray())}");
-        }
-        else if (action == ":")
-        {
-            Result res = Calc.Division;
-            try
-            {
-                Console.WriteLine($" Result: {res(numbersSet.ToArray())}");
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("ERROR: Division by zero");                
-            }
-            
-        }
-
-        Console.ReadLine();
+     Console.ReadLine();
     }
 }
 
 public static class Calc
 {
-    public static double Add(params double[] num)
+   public static double state = 0;
+
+    public static double Add(double num)
     {
-        double result = 0;
-        foreach (double elem in num)
-        {
-            result += elem;
-        }
-        return result;
+        state += num;
+        return state;
     }
 
-    public static double Differ(params double[] num)
+    public static double Differ(double num)
     {
-        double result = num[0];
-        for (int i = 1; i < num.Length; i++)
-        {
-            result -= num[i];
-        }
-        return result;
+        state -= num;
+        return state;
     }
 
-    public static double Multiplication(params double[] num)
+    public static double Multiplication(double num)
     {
-        double result = 1;
-        foreach (double elem in num)
-        {
-            result *= elem;
-        }
-        return result;
+        state *= num;
+        return state;
     }
 
-    public static double Division(params double[] num)
+    public static double Division(double num)
     {
-        double result = num[0];
-        for (int i = 1; i < num.Length; i++)
+        if (num == 0)
         {
-            if (num[i] == 0)
-            {
-                throw new DivideByZeroException();
-            }
-            result /= num[i];
+            throw new DivideByZeroException();
         }
-        return result;
+        state /= num;
+        return state;
+    }
+
+    public static void Print()
+    {
+        Console.WriteLine($"Result: {state} \n");
     }
 }

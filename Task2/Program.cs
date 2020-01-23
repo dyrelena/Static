@@ -5,7 +5,7 @@ public class Program
     public static void Main()
     {
         int[] arr = new int[7] { 6, 3, 7, 1, 9, 2, 1 };
-        ArrExtension.Sorting(arr);
+        arr.Sorting();
 
         foreach (int elem in arr)
         {
